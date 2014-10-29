@@ -56,17 +56,17 @@ public:
     this->sift_up (_heap.size() - 1);
   }
 
-  type& get_root()
+  type& top()
   {
     return _heap[0];
   }
 
-  type const& get_root() const
+  type const& top() const
   {
     return _heap[0];
   }
   
-  void extract_root()
+  void extract_top()
   {
     std::swap (_heap[0], _heap.back());
     _heap.pop_back();
