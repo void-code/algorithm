@@ -3,7 +3,7 @@
 #include <cstddef>
 
 template<typename T, typename R, typename C = std::less<T>>
-class binary_heap
+class binary_heap_t
 {
 public:
 
@@ -29,11 +29,11 @@ public:
     elem* _elem;
   };
 
-  binary_heap()
+  binary_heap_r()
   {
   }
 
-  ~binary_heap()
+  ~binary_heap_r()
   {
     for ( auto p: _heap )
     {
@@ -148,4 +148,4 @@ private:
   reset_type         _value_reset;
   compare_type       _cmp;
 
-};///binary_heap
+};///binary_heap_r
