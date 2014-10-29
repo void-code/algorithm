@@ -25,6 +25,10 @@ public:
   {
     deleter() : _elem(nullptr){}
     deleter (elem* e) : _elem(e){}
+    operator bool()
+    {
+      return _elem;
+    }
   private:
     elem* _elem;
   };
@@ -70,7 +74,7 @@ public:
     _heap.push_back( new elem{value, _heap.size()});
     if ( _heap.size() < 2 )
     {
-      return;
+      return _null_deleter;
     }
     return this->sift_up (_heap.size() - 1);
   }
@@ -147,5 +151,6 @@ private:
   std::vector<elem*> _heap;
   reset_type         _value_reset;
   compare_type       _cmp;
+  deleter            _null_deleter;
 
 };///binary_heap_r
