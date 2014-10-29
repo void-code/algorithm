@@ -3,7 +3,7 @@
 #include <cstddef>
 
 template<typename T, typename R, typename C = std::less<T>>
-class binary_heap_t
+class binary_heap_r
 {
 public:
 
