@@ -74,7 +74,7 @@ public:
     _heap.push_back( new elem{value, _heap.size()});
     if ( _heap.size() < 2 )
     {
-      return _null_deleter;
+      return deleter(_heap[0]);
     }
     return this->sift_up (_heap.size() - 1);
   }
@@ -83,6 +83,7 @@ public:
   {
     _value_reset (del._elem->value);
     this->sift_down (del._elem->indx);
+    delete _heap.back();
     _heap.pop_back();
   }
 
@@ -151,6 +152,5 @@ private:
   std::vector<elem*> _heap;
   reset_type         _value_reset;
   compare_type       _cmp;
-  deleter            _null_deleter;
 
 };///binary_heap_r
