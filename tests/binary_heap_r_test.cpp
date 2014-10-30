@@ -21,6 +21,7 @@ struct reset_value
 int main()
 {
   time_t t = std::time(0);
+  //time_t t = 1414676676;
   std::cerr << t << "\n";
   srand(t);
   std::multiset<int> s;

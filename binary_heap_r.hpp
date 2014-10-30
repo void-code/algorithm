@@ -88,6 +88,7 @@ public:
 
   void remove ( deleter del )
   {
+    //std::cerr << _heap.size() << ", " << del._elem->indx << "\n";
     _value_reset (del._elem->value);
     std::size_t indx = this->sift_down (del._elem->indx);
     std::swap( _heap[indx], _heap.back() );
@@ -127,11 +128,11 @@ private:
     {
       std::swap (_heap[parent_indx], _heap[indx]);
       std::swap (_heap[parent_indx]->indx, _heap[indx]->indx);
+      indx = parent_indx;
       if ( parent_indx == 0 )
       {
         break;
       }
-      indx = parent_indx;
       parent_indx = (indx - 1) / 2;
     }
     return indx;
