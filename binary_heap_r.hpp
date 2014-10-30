@@ -23,11 +23,17 @@ public:
 
   struct deleter
   {
+    friend class binary_heap_r<T, R, C>;
     deleter() : _elem(nullptr){}
     deleter (elem* e) : _elem(e){}
+    deleter& operator= ( deleter const& ) = default;
     operator bool()
     {
       return _elem;
+    }
+    T const& get_value() const
+    {
+      return _elem->value;
     }
   private:
     elem* _elem;
@@ -64,9 +70,9 @@ public:
   {
   }
 
-  std::vector<type> const& get_heap() const
+  std::size_t size() const
   {
-    return _heap;
+    return _heap.size();
   }
 
   deleter add ( type const& value )
@@ -76,20 +82,27 @@ public:
     {
       return deleter(_heap[0]);
     }
-    return this->sift_up (_heap.size() - 1);
+    std::size_t const indx = this->sift_up (_heap.size() - 1);
+    return deleter(_heap[indx]);
   }
 
   void remove ( deleter del )
   {
     _value_reset (del._elem->value);
-    this->sift_down (del._elem->indx);
+    std::size_t indx = this->sift_down (del._elem->indx);
+    std::swap( _heap[indx], _heap.back() );
+    std::swap( _heap[indx]->indx, _heap.back()->indx );
+    if ( indx > 0 )
+    {
+      this->sift_up(indx);
+    }
     delete _heap.back();
     _heap.pop_back();
   }
 
   type& top()
   {
-    return _heap[0].value;
+    return _heap[0]->value;
   }
 
   type const& top() const
@@ -107,7 +120,7 @@ public:
 
 private:
 
-  void sift_up ( std::size_t indx )
+  std::size_t sift_up ( std::size_t indx )
   {
     std::size_t parent_indx = (indx - 1) / 2;
     while ( ! _cmp (_heap[parent_indx]->value, _heap[indx]->value) )
@@ -121,10 +134,10 @@ private:
       indx = parent_indx;
       parent_indx = (indx - 1) / 2;
     }
-    return deleter(_heap[indx]);
+    return indx;
   }
 
-  void sift_down ( std::size_t indx )
+  std::size_t sift_down ( std::size_t indx )
   {
     std::size_t child_indx = (indx * 2) + 1;
     std::size_t best = child_indx;
@@ -147,6 +160,7 @@ private:
         break;
       }
     }
+    return indx;
   }
 
 //members
