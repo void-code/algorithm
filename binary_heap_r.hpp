@@ -88,7 +88,6 @@ public:
 
   void remove ( deleter del )
   {
-    //std::cerr << _heap.size() << ", " << del._elem->indx << "\n";
     _value_reset (del._elem->value);
     std::size_t indx = this->sift_down (del._elem->indx);
     std::swap( _heap[indx], _heap.back() );
