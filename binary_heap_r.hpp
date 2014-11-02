@@ -113,6 +113,7 @@ public:
   void extract_top()
   {
     std::swap (_heap[0], _heap.back());
+    std::swap (_heap[0]->indx, _heap.back()->indx);
     delete _heap.back();
     _heap.pop_back();
     this->sift_down(0);
