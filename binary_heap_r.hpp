@@ -12,21 +12,21 @@ public:
   typedef T  value_type;
   typedef C  compare_type;
 
-private:
-
   struct elem
   {
     value_type  value;
     std::size_t indx;
   };
 
-public:
-
   struct iterator
   {
     friend class binary_heap_r<value_type, compare_type>;
-    iterator() : _elem(nullptr){}
-    iterator (elem* e) : _elem(e){}
+    iterator() : _elem(nullptr)
+    {
+    }
+    iterator (elem* e) : _elem(e)
+    {
+    }
     iterator& operator= ( iterator const& ) = default;
     operator bool()
     {
@@ -108,19 +108,24 @@ public:
 
   void remove ( iterator del )
   {
-    delete _heap[del._elem->indx];
-    _heap[del._elem->indx] = _heap.back();
-    _heap[del._elem->indx]->indx = del._elem->indx;
+    std::size_t const indx = del._elem->indx;
+    delete _heap[indx];
+    if ( indx == (_heap.size()-1) )
+    {
+      _heap.pop_back();
+      return;
+    }
+    _heap[indx] = _heap.back();
+    _heap[indx]->indx = del._elem->indx;
     _heap.pop_back();
     if ( del._elem->indx == 0 )
     {
       this->sift_down(0);
       return;
     }
-    std::size_t new_indx = this->sift_up(del._elem->indx);
-    if ( new_indx == del._elem->indx )
+    if ( indx == this->sift_up(indx) )
     {
-      this->sift_down(new_indx);
+      this->sift_down(indx);
     }
   }
 
