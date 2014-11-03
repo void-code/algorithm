@@ -9,24 +9,15 @@
 
 #include "../binary_heap_r.hpp"
 
-template <typename T>
-struct reset_value
-{
-  void operator()( T& t )
-  {
-    t = std::numeric_limits<T>::max();
-  }
-};
-
 int main()
 {
   time_t t = std::time(0);
   //time_t t = 1414676676;
-  std::cerr << t << "\n";
+  //std::cerr << t << "\n";
   srand(t);
   std::multiset<int> s;
-  binary_heap_r<int, reset_value<int>> h;
-  std::vector<std::pair<decltype(h)::deleter, decltype(s)::iterator>> vd;
+  binary_heap_r<int> h;
+  std::vector<std::pair<decltype(h)::iterator, decltype(s)::iterator>> vd;
 
   for ( unsigned i = 0; i < 999; ++i )
   {
@@ -41,7 +32,7 @@ int main()
     }
     if ( h.top() != *s.begin() )
     {
-      std::cerr << "top() failed\n";
+      std::cerr << "first iteration: top() failed\n";
       std::cerr << "step " << i
                 << "; ERR: " << h.top() << " != " << *s.begin()
                 << ", empty: " << h.empty()
@@ -58,7 +49,7 @@ int main()
       vd.pop_back();
       if ( !h.empty() && !s.empty() && h.top() != *s.begin() )
       {
-        std::cerr << "top() failed\n";
+        std::cerr << "second iteration: top() failed\n";
         std::cerr << "step " << i
                   << "; ERR: " << h.top() << " != " << *s.begin()
                   << ", empty h: " << h.empty()
