@@ -78,7 +78,7 @@ private:
   void sift_up ( std::size_t indx )
   {
     std::size_t parent_indx = (indx - 1) / 2;
-    while ( ! _cmp (_heap[parent_indx], _heap[indx]) )
+    while ( !compare_type()(_heap[parent_indx], _heap[indx]) )
     {
       std::swap (_heap[parent_indx], _heap[indx]);
       if ( parent_indx == 0 )
@@ -93,19 +93,18 @@ private:
   void sift_down ( std::size_t indx )
   {
     std::size_t child_indx = (indx * 2) + 1;
-    std::size_t best = child_indx;
     while ( child_indx < _heap.size() )
     {
-      if ( child_indx + 1 < _heap.size() && _cmp (_heap[child_indx+1], _heap[child_indx]) )
+      if ( child_indx + 1 < _heap.size() &&
+            compare_type()(_heap[child_indx+1], _heap[child_indx]) )
       {
-        best = child_indx + 1;
+        child_indx = child_indx + 1;
       }
-      if ( _cmp (_heap[best], _heap[indx]) )
+      if ( compare_type()(_heap[child_indx], _heap[indx]) )
       {
-        std::swap (_heap[best], _heap[indx]);
-        indx = best;
-        child_indx = (best * 2) + 1;
-        best = child_indx;
+        std::swap (_heap[child_indx], _heap[indx]);
+        indx = child_indx;
+        child_indx = (child_indx * 2) + 1;
       }
       else
       {
@@ -116,6 +115,5 @@ private:
 
 //members
   std::vector<type> _heap;
-  compare_type      _cmp;
 
 };///binary_heap

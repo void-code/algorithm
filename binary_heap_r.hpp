@@ -128,8 +128,8 @@ private:
 
   std::size_t sift_up ( std::size_t indx )
   {
-    std::size_t parent_indx = (indx - 1) / 2;
-    while ( !_cmp (_heap[parent_indx]->value, _heap[indx]->value) )
+    for ( std::size_t parent_indx = (indx - 1) / 2;
+            !compare_type() (_heap[parent_indx]->value, _heap[indx]->value); )
     {
       std::swap (_heap[parent_indx], _heap[indx]);
       _heap[parent_indx]->indx = parent_indx;
@@ -146,22 +146,20 @@ private:
 
   std::size_t sift_down ( std::size_t indx )
   {
-    std::size_t child_indx = (indx * 2) + 1;
-    std::size_t best = child_indx;
-    while ( child_indx < _heap.size() )
+    for ( std::size_t child_indx = (indx * 2) + 1; child_indx < _heap.size(); )
     {
-      if ( child_indx + 1 < _heap.size() && _cmp (_heap[child_indx+1]->value, _heap[child_indx]->value) )
+      if ( child_indx + 1 < _heap.size() &&
+              compare_type() (_heap[child_indx+1]->value, _heap[child_indx]->value) )
       {
-        best = child_indx + 1;
+        child_indx += 1;
       }
-      if ( _cmp (_heap[best]->value, _heap[indx]->value) )
+      if ( compare_type() (_heap[child_indx]->value, _heap[indx]->value) )
       {
-        std::swap (_heap[best], _heap[indx]);
-        _heap[best]->indx = best;
+        std::swap (_heap[child_indx], _heap[indx]);
+        _heap[child_indx]->indx = child_indx;
         _heap[indx]->indx = indx;
-        indx = best;
-        child_indx = (best * 2) + 1;
-        best = child_indx;
+        indx = child_indx;
+        child_indx = (child_indx * 2) + 1;
       }
       else
       {
@@ -173,6 +171,5 @@ private:
 
 //members
   std::vector<elem*> _heap;
-  compare_type       _cmp;
 
 };///binary_heap_r

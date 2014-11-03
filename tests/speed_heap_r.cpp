@@ -5,14 +5,16 @@
 
 int main()
 {
+  unsigned const delta = 1000000;
   binary_heap_r<int> h;
+  h.reserve(delta/2);
 
-  for ( unsigned i = 0; i < 1000000; ++i ) 
+  for ( unsigned i = 0; i < delta/2; ++i ) 
   {
     auto del = h.add( i );
   }
 
-  for ( unsigned i = 0; i < 1000000; ++i ) 
+  for ( unsigned i = 0; i < delta/2; ++i ) 
   {
     h.extract_top();
   }
