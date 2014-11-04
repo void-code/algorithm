@@ -98,7 +98,7 @@ private:
       if ( child_indx + 1 < _heap.size() &&
             compare_type()(_heap[child_indx+1], _heap[child_indx]) )
       {
-        child_indx = child_indx + 1;
+        child_indx += 1;
       }
       if ( compare_type()(_heap[child_indx], _heap[indx]) )
       {

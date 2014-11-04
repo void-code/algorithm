@@ -123,7 +123,12 @@ public:
       this->sift_down(0);
       return;
     }
-    if ( indx == this->sift_up(indx) )
+    if ( compare_type() (_heap[(indx-1)/2]->value, _heap[indx]->value ) )
+    {
+      this->sift_up(indx);
+    }
+    //if ( indx == this->sift_up(indx) )
+    else
     {
       this->sift_down(indx);
     }
