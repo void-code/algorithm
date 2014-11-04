@@ -8,7 +8,6 @@ template<typename T, typename C = std::less<T>>
 class binary_heap_r
 {
 public:
-
   typedef T  value_type;
   typedef C  compare_type;
 
@@ -24,10 +23,10 @@ public:
     iterator() : _elem(nullptr)
     {
     }
-    iterator (elem* e) : _elem(e)
+    explicit iterator (elem* e) : _elem(e)
     {
     }
-    iterator& operator= ( iterator const& ) = default;
+    iterator& operator= (iterator const&) = default;
     operator bool()
     {
       return _elem;
@@ -38,7 +37,7 @@ public:
     }
     T const& operator->() const
     {
-      return *this;
+      return this->operator*();
     }
   private:
     elem* _elem;
@@ -56,7 +55,7 @@ public:
     }
   }
 
-  void reserve ( std::size_t const size )
+  void reserve (std::size_t const size)
   {
     _heap.reserve(size);
   }
@@ -71,7 +70,7 @@ public:
     _heap.clear();
   }
 
-  void make ( std::vector<value_type>&& vec  )
+  void make (std::vector<value_type>&& vec)
   {
     // TODO
   }
@@ -81,7 +80,7 @@ public:
     return _heap.size();
   }
 
-  iterator add ( value_type const& value )
+  iterator add (value_type const& value)
   {
     _heap.push_back( new elem{value, _heap.size()});
     if ( _heap.size() < 2 )
@@ -106,7 +105,7 @@ public:
     this->sift_down(0);
   }
 
-  void remove ( iterator del )
+  void remove (iterator del)
   {
     std::size_t const indx = del._elem->indx;
     delete _heap[indx];
@@ -123,20 +122,14 @@ public:
       this->sift_down(0);
       return;
     }
-    if ( compare_type() (_heap[(indx-1)/2]->value, _heap[indx]->value ) )
-    {
-      this->sift_up(indx);
-    }
-    //if ( indx == this->sift_up(indx) )
-    else
+    if ( indx == this->sift_up(indx) )
     {
       this->sift_down(indx);
     }
   }
 
 private:
-
-  std::size_t sift_up ( std::size_t indx )
+  std::size_t sift_up (std::size_t indx)
   {
     for ( std::size_t parent_indx = (indx - 1) / 2;
             !compare_type() (_heap[parent_indx]->value, _heap[indx]->value); )
@@ -154,7 +147,7 @@ private:
     return indx;
   }
 
-  std::size_t sift_down ( std::size_t indx )
+  std::size_t sift_down (std::size_t indx)
   {
     for ( std::size_t child_indx = (indx * 2) + 1; child_indx < _heap.size(); )
     {
@@ -181,5 +174,4 @@ private:
 
 //members
   std::vector<elem*> _heap;
-
 };///binary_heap_r
