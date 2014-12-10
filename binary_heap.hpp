@@ -49,10 +49,6 @@ public:
   void add ( type const& elem )
   {
     _heap.push_back(elem);
-    if ( _heap.size() < 2 )
-    {
-      return;
-    }
     this->sift_up (_heap.size() - 1);
   }
 
@@ -78,15 +74,14 @@ private:
   void sift_up ( std::size_t indx )
   {
     std::size_t parent_indx = (indx - 1) / 2;
-    while ( !compare_type()(_heap[parent_indx], _heap[indx]) )
+    while ( indx > 0 && !compare_type()(_heap[parent_indx], _heap[indx]) )
     {
       std::swap (_heap[parent_indx], _heap[indx]);
-      if ( parent_indx == 0 )
-      {
-        break;
-      }
       indx = parent_indx;
-      parent_indx = (indx - 1) / 2;
+      if ( indx > 0 )
+      {
+        parent_indx = (indx - 1) / 2;
+      }
     }
   }
 

@@ -40,7 +40,7 @@ public:
       return this->operator*();
     }
   private:
-    elem* _elem;
+    elem const* _elem;
   };
 
   binary_heap_r()
@@ -83,10 +83,6 @@ public:
   iterator add (value_type const& value)
   {
     _heap.push_back( new elem{value, _heap.size()});
-    if ( _heap.size() < 2 )
-    {
-      return iterator(_heap[0]);
-    }
     std::size_t const indx = this->sift_up (_heap.size() - 1);
     return iterator(_heap[indx]);
   }
@@ -132,17 +128,16 @@ private:
   std::size_t sift_up (std::size_t indx)
   {
     for ( std::size_t parent_indx = (indx - 1) / 2;
-            !compare_type() (_heap[parent_indx]->value, _heap[indx]->value); )
+            indx > 0 && !compare_type() (_heap[parent_indx]->value, _heap[indx]->value); )
     {
       std::swap (_heap[parent_indx], _heap[indx]);
       _heap[parent_indx]->indx = parent_indx;
       _heap[indx]->indx = indx;
       indx = parent_indx;
-      if ( parent_indx == 0 )
+      if ( indx != 0 )
       {
-        break;
+        parent_indx = (indx - 1) / 2;
       }
-      parent_indx = (indx - 1) / 2;
     }
     return indx;
   }
